@@ -2,27 +2,22 @@ version: '3.8'
 
 services:
 
-  database:
-    image: mysql:5.7
-    container_name: database
-    restart: unless-stopped
-
+  db:
+    image: mysql:5.7.32
+    container_name: mysqldb5.7.32
     environment:
-      MYSQL_DATABASE: 'database'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
-
-    ports:
-      # <Port exposed> : < MySQL Port running inside container>
-      - 3306:3306
-
-    expose:
-      # Opens port 3306 on the container
-      - 3306
-
+      # with mysql
+      MYSQL_DATABASE: database
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - my-db:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      external_network:
+        aliases:
+          - mysqldb5.7.32
 
   app:
     container_name: pasterbin
@@ -34,8 +29,8 @@ services:
     volumes:
       - ./:/var/www/html/pasterbin
     depends_on:
-      - database
+      - db
 
-volumes:
-  my-db:
+networks:
+  external_network:
 

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GeneratorController;
+use App\Http\Controllers\RouteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +16,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('/generate-route', [GeneratorController::class, 'generateRoute']);
+Route::post('/generate-route', [RouteController::class, 'generateRoute']);
+Route::get('/generated-route/{hashedUrl}', [RouteController::class, 'retrieveData']);
