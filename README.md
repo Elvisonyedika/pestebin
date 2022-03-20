@@ -8,7 +8,7 @@ The service should allow you to set an expiry for content so that it self destru
 
 ## Running the application
 ### Mysql Database
-To start the database server kindly execute the docker command. `Docker compose up -d`.
+To start the database server kindly execute the docker command. `docker compose up -d`.
 
 ### Web Application
 - Execute **`php artisan migrate`** - this command should be ran only at inception of the application.
