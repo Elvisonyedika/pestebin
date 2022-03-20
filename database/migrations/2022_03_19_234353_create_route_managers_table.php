@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->text('text');
             $table->string('hashed_url')->unique()->nullable(true);
-            $table->date('expiry_date')->nullable(true);
+            $table->dateTime('expiry_date')->nullable(true);
             $table->timestamps();
         });
     }

@@ -25,7 +25,11 @@ class RouteController extends Controller
 
         $route = new RouteManager();
         $route->text = $request->input('text');
-        $route->expiry_date = $request->input('expiry_date'); # date that the route can expire
+
+        $expiry_date = $request->input('expiry_date'); # date that the route can expire
+        if (!empty($expiry_date)) {
+            $route->expiry_date = Carbon::createFromFormat('d-m-Y H:i:s', $expiry_date);
+        }
 
         return url("/api/generated-route/" . $route->generate());
     }
@@ -46,10 +50,11 @@ class RouteController extends Controller
         if ($route) {
 
             if (!empty($route->expiry_date)) {
-                $difference = Carbon::now() - $route->expiry_date;
-                dd([
-                    $difference, Carbon::date($difference),
-                ]);
+                if (Carbon::parse($route->expiry_date)->gte(Carbon::now())) {
+                    return $route->text;
+                } else {
+                    return null;
+                }
             }
 
             return $route->text;
