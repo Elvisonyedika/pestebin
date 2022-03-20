@@ -10,4 +10,11 @@ WORKDIR /app
 COPY . .
 RUN composer install
 
-CMD [ "./docker/start.sh" ]
+# apply permission on start file
+RUN chmod a+rwx /app/docker/start.sh
+
+COPY ./docker/start.sh /usr/local/bin/start.sh
+
+EXPOSE 80
+
+CMD ["sh", "/usr/local/bin/start.sh"]
