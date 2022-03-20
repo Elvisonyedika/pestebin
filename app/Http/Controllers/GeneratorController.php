@@ -16,7 +16,7 @@ class GeneratorController extends Controller
     public function generateRoute(Request $request)
     {
 
-        $validated = $request->validate([
+        $request->validate([
             'text' => ['required']
         ]);
 
@@ -24,7 +24,6 @@ class GeneratorController extends Controller
         $route->text = $request->input('text');
         $route->expiry_date = $request->input('expiry_date'); # date that the route can expire
 
-        $shortendURL = '';
-        return $shortendURL;
+        return $route->generate();
     }
 }

@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('route_managers', function (Blueprint $table) {
             $table->id();
+            $table->text('text');
+            $table->string('hashed_url')->unique()->nullable(true);
+            $table->date('expiry_date')->nullable(true);
             $table->timestamps();
         });
     }
