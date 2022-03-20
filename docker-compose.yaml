@@ -2,6 +2,18 @@ version: '3.8'
 
 services:
 
+  pasterbin:
+    container_name: pasterbin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan serve --host=0.0.0.0'
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/pasterbin
+    depends_on:
+      - db
   db:
     image: mysql:5.7.32
     container_name: mysqldb5.7.32
@@ -18,18 +30,6 @@ services:
       external_network:
         aliases:
           - mysqldb5.7.32
-
-  app:
-    container_name: pasterbin
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
-    volumes:
-      - ./:/var/www/html/pasterbin
-    depends_on:
-      - db
 
 networks:
   external_network:
