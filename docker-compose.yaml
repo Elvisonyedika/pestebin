@@ -1,22 +1,10 @@
 version: '3.8'
 
 services:
-
-  pasterbin:
-    container_name: pasterbin
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: 'php artisan serve --host=0.0.0.0'
-    ports:
-      - 8000:8000
-    volumes:
-      - .:/pasterbin
-    depends_on:
-      - db
   db:
     image: mysql:5.7.32
     container_name: mysqldb5.7.32
+    restart: unless-stopped
     environment:
       # with mysql
       MYSQL_DATABASE: database
@@ -24,13 +12,50 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./data/mysql:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
     networks:
-      external_network:
-        aliases:
-          - mysqldb5.7.32
+      - app_network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app_network
+
+  pasterbin:
+    container_name: pasterbin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan serve'
+    restart: unless-stopped
+    ports:
+      - 8000:85
+    volumes:
+      - .:/pasterbin
+      - ./php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - app_network
+
+volumes:
+  dbdata:
+    driver: local
 
 networks:
-  external_network:
-
+  app_network:
+    driver: bridge
