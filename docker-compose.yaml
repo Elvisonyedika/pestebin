@@ -1,61 +1,61 @@
 version: '3.8'
 
 services:
-  db:
+  pasterbin-mysql:
     image: mysql:5.7.32
-    container_name: mysqldb5.7.32
+    container_name: pasterbin-mysql
     restart: unless-stopped
+    tty: true
     environment:
       # with mysql
       MYSQL_DATABASE: database
       MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: pasterbin-mysql
     volumes:
-      - ./data/mysql:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./docker/mysql/data/:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - 3306:3306
     networks:
-      - app_network
-
-  #Nginx Service
-  webserver:
-    image: nginx:alpine
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www/html/
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    networks:
-      - app_network
+      - app-network
 
   pasterbin:
     container_name: pasterbin
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
-    command: 'php artisan serve'
+    command: 'composer install && php artisan migrate'
+    image: laravel8-php-fpm-80
     restart: unless-stopped
+    tty: true
+    working_dir: /var/www
     ports:
-      - 8000:85
+      - 8080:86
     volumes:
-      - .:/pasterbin
-      - ./php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
+      - ./:/var/www
     depends_on:
-      - db
+      - pasterbin-mysql
     env_file:
       - .env
     networks:
-      - app_network
+      - app-network
+  
+  nginx:
+    image: nginx:1.19.8-alpine
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - app-network
 
-volumes:
-  dbdata:
-    driver: local
 
 networks:
-  app_network:
+  app-network:
     driver: bridge
