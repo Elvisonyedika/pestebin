@@ -7,9 +7,15 @@ The service should take a bunch of text and return a short url to the caller.
 The service should allow you to set an expiry for content so that it self destructs after the said expiry date, however, expiry is optional.
 
 ## Running the application
-### Mysql Database
-To start the database server kindly execute the docker command. `docker compose up -d`.
+### Docker
+Download and install docker on your system.
 
-### Web Application
-- Execute **`php artisan migrate`** - this command should be ran only at inception of the application.
-- Execute `php artisan serve` - this command initiates the app and assigns the port number 80.
+Start the docker engine.
+
+### Application
+To start the application kindly execute the docker command. `docker compose up -d`.
+
+### Documentation (SWAGGER)
+Go to the url below to find list of all endpoints and usages.
+
+http://localhost:8000/docs/api-docs
