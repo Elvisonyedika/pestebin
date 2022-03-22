@@ -23,35 +23,21 @@ services:
 
   pasterbin:
     container_name: pasterbin
-    build:
-      context: ./
+    build: 
+      context: .
       dockerfile: Dockerfile
-    command: 'composer install && php artisan migrate'
-    image: laravel8-php-fpm-80
+    image: pasterbin
     restart: unless-stopped
     tty: true
-    working_dir: /var/www
     ports:
-      - 8080:86
+      - 8080:8080
+      - 8000:8000
     volumes:
       - ./:/var/www
     depends_on:
       - pasterbin-mysql
     env_file:
       - .env
-    networks:
-      - app-network
-  
-  nginx:
-    image: nginx:1.19.8-alpine
-    container_name: nginx
-    restart: unless-stopped
-    tty: true
-    ports:
-      - 8000:80
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       - app-network
 

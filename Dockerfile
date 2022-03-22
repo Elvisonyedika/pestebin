@@ -5,6 +5,14 @@ RUN docker-php-ext-install bcmath pdo_mysql
 RUN apt-get update
 RUN apt-get install -y git zip unzip
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+WORKDIR /pasterbin
 
-EXPOSE 9000
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY ./docker/start.sh /pasterbin/docker/
+
+RUN chmod +x /pasterbin/docker/start.sh
+
+COPY ./ /pasterbin/
+
+CMD ["sh", "/pasterbin/docker/start.sh" ]
+EXPOSE 8080
