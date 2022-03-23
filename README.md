@@ -13,9 +13,11 @@ Download and install docker on your system.
 Start the docker engine.
 
 ### Application
-To start the application kindly execute the docker command. `docker compose up -d`.
+Make a copy of .env.example and rename it to .env.
+
+Execute the docker command `docker compose up -d` in terminal.
 
 ### Documentation (SWAGGER)
 Go to the url below to find list of all endpoints and usages.
 
-http://localhost:8000/docs/api-docs
+http://localhost:8080/api/documentation
