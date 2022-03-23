@@ -23,7 +23,7 @@ services:
 
   pasterbin:
     container_name: pasterbin
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     image: pasterbin
@@ -33,7 +33,7 @@ services:
       - 8080:8080
       - 8000:8000
     volumes:
-      - ./:/var/www
+      - ./:/pasterbin
     depends_on:
       - pasterbin-mysql
     env_file:

@@ -1,0 +1,119 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "PasterBin",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/generate-route": {
+            "post": {
+                "tags": [
+                    "GenerateRoute"
+                ],
+                "summary": "Generate Route",
+                "description": "Generate a short url from a bunch of text and return to the caller",
+                "operationId": "generateRoute",
+                "parameters": [
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "expiry_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "datetime",
+                            "example": "d-m-Y H:i:s"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Route Generated Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Route Generated Successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/api/generated-route/{hashedUrl}": {
+            "get": {
+                "tags": [
+                    "RouteDetails"
+                ],
+                "summary": "Get Route Details",
+                "description": "Get Route Details",
+                "operationId": "GetRouteDetails",
+                "parameters": [
+                    {
+                        "name": "hashedUrl",
+                        "in": "path",
+                        "description": "Hashed Url",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "faf23651e5f86b88e83508ceb1c8ca8d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Route Details Successfully Fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

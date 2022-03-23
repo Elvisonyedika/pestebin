@@ -15,5 +15,6 @@ php artisan migrate --force
 
 echo "---------------- RUNNING DEBUG MODE -------------"
 composer require darkaonline/l5-swagger
+php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
 php artisan l5-swagger:generate
 php artisan serve --host=0.0.0.0 --port=8080
