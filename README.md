@@ -21,3 +21,15 @@ Execute the docker command `docker compose up -d` in terminal.
 Go to the url below to find list of all endpoints and usages.
 
 http://localhost:8080/api/documentation
+
+### Test
+Open the documentation at 'http://localhost:8080/api/documentation'.
+
+Click on each of the endpoint to expand it.
+
+Click on the 'Try it out' button to the right.
+
+Provided the required parameters.
+
+Click on the 'Execute', the response will appear in the response window below the button.
+
